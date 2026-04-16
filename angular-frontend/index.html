@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>App Angular - Luis Torres</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #eef2f3; text-align: center; color: #333; }
+        .container { background: white; max-width: 600px; margin: 50px auto; padding: 20px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #dd0031; } /* Color oficial de Angular */
+        table { width: 100%; margin-top: 20px; border-collapse: collapse; }
+        th, td { padding: 12px; border: 1px solid #ddd; text-align: center; }
+        th { background-color: #dd0031; color: white; }
+        .status { margin-top: 15px; font-weight: bold; color: #28a745; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://angular.io/assets/images/logos/angular/angular.svg" width="80" alt="Angular Logo">
+        <h1>Frontend Angular</h1>
+        <p><strong>Estudiante:</strong> Luis Torres</p>
+        <hr>
+        <div id="status" class="status">Cargando datos desde Backend...</div>
+        <div id="data-table"></div>
+    </div>
+
+    <script>
+        // ¡OJO! AQUÍ DEBES PONER LA IP PÚBLICA DE TU BACKEND (La que termina en .47)
+        const BACKEND_URL = 'http://98.80.216.47:8080/personas';
+
+        fetch(BACKEND_URL)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('status').innerText = "✅ Conexión Exitosa con Backend";
+                let tableHtml = `<table>
+                    <tr><th>ID</th><th>Nombre</th><th>Apellido</th><th>Edad</th></tr>`;
+                
+                data.forEach(p => {
+                    tableHtml += `<tr>
+                        <td>${p.id}</td>
+                        <td>${p.nombre}</td>
+                        <td>${p.apellido}</td>
+                        <td>${p.edad}</td>
+                    </tr>`;
+                });
+                
+                tableHtml += '</table>';
+                document.getElementById('data-table').innerHTML = tableHtml;
+            })
+            .catch(err => {
+                document.getElementById('status').innerText = "❌ Error al conectar con Backend";
+                document.getElementById('status').style.color = "red";
+                console.error(err);
+            });
+    </script>
+</body>
+</html>
